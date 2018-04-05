@@ -22,6 +22,15 @@ def save_students
   file.close
 end
 
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",")
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+end
+
 def interactive_menu
   loop do
     print_menu
@@ -33,6 +42,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
   puts "9. Exit"
 end
 
@@ -50,6 +60,8 @@ def process(selection)
       show_students
     when "3"
       save_students
+    when "4"
+      load_students
     when "9"
       exit
     else
@@ -73,77 +85,3 @@ def print_footer
 end
 
 interactive_menu
-
-# additional/ improved methods from excercises step8
-=begin
-def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, just enter return twice"
-  name = gets.chomp
-  cohort = gets.chomp  
-  
-  while !name.empty? do
-    if cohort == "" || cohort == " "
-      @students << {name: name, cohort: "April"}
-    else
-       @students << {name: name, cohort: cohort.to_sym}
-    end
-    
-    if @students.count == 1
-      puts "Now we have #{@students.count} student"
-    else
-       puts "Now we have #{@students.count} students"
-    end
-    name = gets.chomp
-    cohort = gets.chomp 
-  end
-end
-
-def print_students_list
-  i = 0
-  while i < @students.length do
-    puts "#{i + 1}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort)".center(60)
-    i += 1
-  end
-end
-
-def print_by_cohorts(students)
-  cohorts = {}
-  
-  students.each do |student|
-    cohort = student[:cohort]
-    name = student[:name]
-    
-    if cohorts[cohort] == nil
-      cohorts[cohort] = [name]
-    else
-      cohorts[cohort] << name
-    end
-  end
-   
-  cohorts.each do |cohort, name|
-    puts "\n#{cohort.capitalize} cohort students: " 
-    puts "--------------------------------------"
-    puts name
-  end
-end
-
-def print_by_letter(students)
-  puts "See the list of students whose name begins with a"
-  letter = gets.chomp
-  students.each_with_index do |student, index|
-    if "#{student[:name][0]}" == letter
-      puts "#{student[:name]} (#{student[:cohort]} cohort)"
-    end
-  end
-end
-
-def print_by_length(students)
-  puts "Below is a list of students whose name is shorter than 12 characters"
-  students.each_with_index do |student, index|
-    if student[:name].length < 12 
-      puts "#{student[:name]} (#{student[:cohort]} cohort)"
-    end
-  end
-end
-=end
