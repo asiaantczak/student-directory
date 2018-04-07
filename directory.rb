@@ -25,11 +25,13 @@ def process(selection)
       puts "You chose to display student list"
       show_students
     when "3"
-      puts "You chose to save the students to the file"
-      save_students
+      puts "You chose to save the students to the file- enter the name of the file or default will be used"
+      filename = STDIN.gets.chomp
+      save_students(filename)
     when "4"
       puts "You chose to load student list from the file"
-      load_students
+      filename = STDIN.gets.chomp
+      load_students(filename)
     when "9"
       exit
     else
@@ -74,8 +76,11 @@ def print_footer
   puts "Overall, we have #{@students.count} great students"
 end
 
-def save_students
-  file = File.open("students.csv", "w")
+def save_students(filename)
+  if filename == ""
+    filename = "students.csv"
+  end
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -84,7 +89,10 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
+def load_students(filename)
+  if !File.exists?(filename)
+    filename = "students.csv"
+  end
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
