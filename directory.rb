@@ -19,12 +19,16 @@ end
 def process(selection)
   case selection
     when "1"
+      puts "You chose to add student"
       input_students
     when "2"
+      puts "You chose to display student list"
       show_students
     when "3"
+      puts "You chose to save the students to the file"
       save_students
     when "4"
+      puts "You chose to load student list from the file"
       load_students
     when "9"
       exit
